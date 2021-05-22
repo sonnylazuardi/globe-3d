@@ -204,7 +204,7 @@ const Home = () => {
               <h2 className="text-gray-700 text-center text-3xl font-bold">
                 How is it possible?
               </h2>
-              <div className="pt-10 p-4 text-center">
+              <div className="p-4 text-center">
                 This project is powered by React Globe GL
               </div>
               <div className="">
