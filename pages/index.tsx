@@ -14,7 +14,7 @@ export default function Home() {
   const [imageUrl, setImageUrl] = React.useState("/images/texture.png");
   const ref = React.useRef(null);
   const inputRef = React.useRef(null);
-  const arcsData = [...Array(20).keys()].map(() => ({
+  const arcsData = [1, 2, 3, 4, 5, 6].map(() => ({
     startLat: (Math.random() - 0.5) * 180,
     startLng: (Math.random() - 0.5) * 360,
     endLat: (Math.random() - 0.5) * 180,
@@ -91,7 +91,7 @@ export default function Home() {
                       <a
                         href="https://www.figma.com/community/plugin/977567760148608604/Globe-3D"
                         type="button"
-                        className="mr-5 inline-flex items-center px-6 py-3 border bg-gradient-to-r from-blue-300 to-blue-500 hover:from-pink-500 hover:to-orange-500 text-white font-semibold px-6 py-3 rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
+                        className="mr-5 inline-flex items-center px-6 py-3 border bg-gradient-to-r from-blue-300 to-blue-500 hover:from-pink-500 hover:to-orange-500 text-white font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
                       >
                         <CloudDownloadIcon className="h-5 w-5 text-white mr-2" />
                         Figma Plugin
@@ -99,7 +99,7 @@ export default function Home() {
                       <a
                         href="https://github.com/sonnylazuardi/globe-3d"
                         type="button"
-                        className="mr-5 inline-flex items-center px-6 py-3 border text-blue-500 font-semibold px-6 py-3 rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
+                        className="mr-5 inline-flex items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
                       >
                         <CodeIcon className="h-5 w-5 text-blue-500 mr-2" />
                         Github
@@ -124,7 +124,7 @@ export default function Home() {
                           inputRef?.current.click();
                         }}
                         type="button"
-                        className="inline-flex items-center px-6 py-3 border text-blue-500 font-semibold px-6 py-3 rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white"
+                        className="inline-flex items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white"
                       >
                         <input
                           ref={inputRef}
