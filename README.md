@@ -4,6 +4,8 @@ Globe 3D Next Website + Figma Plugin
 
 ![screen](screens.png)
 
+It is powered by the awesome [React Globe.gl](https://github.com/vasturiano/globe.gl) Library
+
 ## Plugin Getting Started
 
 ```bash
