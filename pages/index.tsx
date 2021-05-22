@@ -91,7 +91,6 @@ const Home = () => {
                     <p className="mt-8 text-sm text-white uppercase tracking-wide font-semibold sm:mt-10 lg:justify-start md:justify-center flex flex-wrap">
                       <a
                         href="https://www.figma.com/community/plugin/977567760148608604/Globe-3D"
-                        type="button"
                         className="mr-5 inline-flex items-center px-6 py-3 border bg-gradient-to-r from-blue-300 to-blue-500 hover:from-pink-500 hover:to-orange-500 text-white font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
                       >
                         <CloudDownloadIcon className="h-5 w-5 text-white mr-2" />
@@ -99,7 +98,6 @@ const Home = () => {
                       </a>
                       <a
                         href="https://github.com/sonnylazuardi/globe-3d"
-                        type="button"
                         className="mr-5 inline-flex items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105"
                       >
                         <CodeIcon className="h-5 w-5 text-blue-500 mr-2" />
