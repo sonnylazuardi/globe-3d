@@ -1,6 +1,5 @@
-import React from "react";
+import * as React from "react";
 import Head from "next/head";
-import dynamic from "next/dynamic";
 import TweetEmbed from "react-tweet-embed";
 import {
   CloudUploadIcon,
@@ -8,12 +7,14 @@ import {
   CodeIcon,
 } from "@heroicons/react/outline";
 
-const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
+let Globe = () => null;
+if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
 
-export default function Home() {
+const Home = () => {
   const [imageUrl, setImageUrl] = React.useState("/images/texture.png");
-  const ref = React.useRef(null);
+  const globeRef = React.useRef(null);
   const inputRef = React.useRef(null);
+  const linkRef = React.useRef(null);
   const arcsData = [1, 2, 3, 4, 5, 6].map(() => ({
     startLat: (Math.random() - 0.5) * 180,
     startLng: (Math.random() - 0.5) * 360,
@@ -118,13 +119,13 @@ export default function Home() {
                 </div>
                 <div className="mt-16 sm:mt-24 lg:mt-0 lg:col-span-5 mx-auto px-5 relative">
                   <div className="absolute left-0 bottom-0 flex z-50">
-                    <div className="py-20 px-10 rounded-xl bg-white border border-gray-100 shadow-xl bg-opacity-25">
+                    <div className="py-10 px-10 rounded-xl bg-white border border-gray-100 shadow-xl bg-opacity-25 flex flex-col">
                       <button
                         onClick={() => {
                           inputRef?.current.click();
                         }}
                         type="button"
-                        className="inline-flex items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white"
+                        className="inline-flex justify-center items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white mb-2"
                       >
                         <input
                           ref={inputRef}
@@ -138,10 +139,31 @@ export default function Home() {
                         <CloudUploadIcon className="h-5 w-5 text-blue-500 mr-2" />
                         Upload Image
                       </button>
+                      <button
+                        onClick={() => {
+                          // console.log(globeRef.current);
+
+                          const canvas = globeRef.current.renderer().domElement;
+                          const link = linkRef.current;
+                          link.setAttribute("download", "globe.png");
+                          link.setAttribute(
+                            "href",
+                            canvas
+                              .toDataURL("image/png")
+                              .replace("image/png", "image/octet-stream")
+                          );
+                          link.click();
+                        }}
+                        type="button"
+                        className="inline-flex justify-center items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white"
+                      >
+                        <CloudDownloadIcon className="h-5 w-5 text-blue-500 mr-2" />
+                        Download Image
+                      </button>
                     </div>
                   </div>
                   <Globe
-                    ref={ref}
+                    ref={globeRef}
                     width={480}
                     height={480}
                     backgroundColor={"rgba(0,0,0,0)"}
@@ -153,6 +175,7 @@ export default function Home() {
                     arcDashAnimateTime={4000 + 500}
                     rendererConfig={{ preserveDrawingBuffer: true }}
                   />
+                  <a className="hidden" ref={linkRef} />
                 </div>
               </div>
             </div>
@@ -242,4 +265,6 @@ export default function Home() {
       <footer className=""></footer>
     </div>
   );
-}
+};
+
+export default Home;

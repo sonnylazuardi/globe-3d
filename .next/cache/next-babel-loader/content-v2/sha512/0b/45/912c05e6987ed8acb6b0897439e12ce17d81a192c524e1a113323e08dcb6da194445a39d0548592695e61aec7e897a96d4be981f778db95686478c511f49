@@ -1,0 +1,1 @@
+{"ast":null,"code":"// Next.js API route support: https://nextjs.org/docs/api-routes/introduction\nexport default ((req, res) => {\n  // Open Chrome DevTools to step through the debugger!\n  // debugger;\n  res.status(200).json({\n    name: 'Hello, world!'\n  });\n});","map":null,"metadata":{},"sourceType":"module"}
