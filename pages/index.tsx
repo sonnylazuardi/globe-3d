@@ -12,9 +12,9 @@ if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
 
 const Home = () => {
   const [imageUrl, setImageUrl] = React.useState("/images/texture.png");
-  const globeRef = React.useRef(null);
-  const inputRef = React.useRef(null);
-  const linkRef = React.useRef(null);
+  const globeRef: any = React.useRef(null);
+  const inputRef: any = React.useRef(null);
+  const linkRef: any = React.useRef(null);
   const arcsData = [1, 2, 3, 4, 5, 6].map(() => ({
     startLat: (Math.random() - 0.5) * 180,
     startLng: (Math.random() - 0.5) * 360,
@@ -163,6 +163,7 @@ const Home = () => {
                     </div>
                   </div>
                   <Globe
+                    //@ts-ignore
                     ref={globeRef}
                     width={480}
                     height={480}
