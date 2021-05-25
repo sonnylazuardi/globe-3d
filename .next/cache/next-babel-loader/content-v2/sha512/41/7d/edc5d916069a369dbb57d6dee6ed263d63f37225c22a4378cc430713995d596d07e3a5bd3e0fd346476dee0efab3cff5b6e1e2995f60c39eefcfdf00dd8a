@@ -1,1 +1,0 @@
-{"ast":null,"code":"\"use strict\";\n\nexports.__esModule = true;\nexports[\"default\"] = resolveRewrites;\n\nfunction resolveRewrites() {}","map":null,"metadata":{},"sourceType":"script"}
