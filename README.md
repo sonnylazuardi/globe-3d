@@ -1,6 +1,6 @@
 # Globe 3D
 
-Globe 3D Next Website + Figma Plugin
+Globe 3D Next Website + Figma Plugin + Supabase for Share URL
 
 ![screen](screens.png)
 
