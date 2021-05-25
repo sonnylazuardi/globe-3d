@@ -9,12 +9,17 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.1",
+    "@supabase/supabase-js": "^1.11.14",
     "autoprefixer": "^10.2.5",
+    "form-data": "^4.0.0",
+    "formidable": "^1.2.2",
+    "get-file-object-from-local-path": "^1.0.2",
     "next": "10.0.7",
     "postcss": "^8.3.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-globe.gl": "^2.18.2",
+    "react-hot-toast": "^1.0.2",
     "react-tweet-embed": "^1.2.2",
     "tailwindcss": "^2.1.2"
   },

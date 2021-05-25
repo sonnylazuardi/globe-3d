@@ -1,16 +1,41 @@
 import * as React from "react";
 import Head from "next/head";
 import TweetEmbed from "react-tweet-embed";
+import { useRouter } from "next/router";
 import {
   CloudUploadIcon,
   CloudDownloadIcon,
   CodeIcon,
+  ShareIcon,
 } from "@heroicons/react/outline";
 
 let Globe = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
 
+import { createClient } from "@supabase/supabase-js";
+import toast, { Toaster } from "react-hot-toast";
+
+const makeid = (length) => {
+  var result = [];
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * charactersLength))
+    );
+  }
+  return result.join("");
+};
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_HOST,
+  process.env.NEXT_PUBLIC_SUPABASE_KEY
+);
+
 const Home = () => {
+  const [globeFile, setGlobeFile] = React.useState(null);
+  const router = useRouter();
   const [imageUrl, setImageUrl] = React.useState("/images/texture.png");
   const globeRef: any = React.useRef(null);
   const inputRef: any = React.useRef(null);
@@ -116,8 +141,8 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="mt-16 sm:mt-24 lg:mt-0 lg:col-span-5 mx-auto px-5 relative">
-                  <div className="absolute left-0 bottom-0 flex z-50">
-                    <div className="py-10 px-10 rounded-xl bg-white border border-gray-100 shadow-xl bg-opacity-25 flex flex-col">
+                  <div className="absolute left-0 top-72 flex z-50">
+                    <div className="py-8 px-8 rounded-xl bg-white border border-gray-100 shadow-xl bg-opacity-25 flex flex-col">
                       <button
                         onClick={() => {
                           inputRef?.current.click();
@@ -130,6 +155,7 @@ const Home = () => {
                           onChange={(e) => {
                             const data = URL.createObjectURL(e.target.files[0]);
                             setImageUrl(data);
+                            setGlobeFile(e.target.files[0]);
                           }}
                           type="file"
                           className="hidden"
@@ -137,27 +163,56 @@ const Home = () => {
                         <CloudUploadIcon className="h-5 w-5 text-blue-500 mr-2" />
                         Upload Image
                       </button>
-                      <button
-                        onClick={() => {
-                          // console.log(globeRef.current);
 
-                          const canvas = globeRef.current.renderer().domElement;
-                          const link = linkRef.current;
-                          link.setAttribute("download", "globe.png");
-                          link.setAttribute(
-                            "href",
-                            canvas
-                              .toDataURL("image/png")
-                              .replace("image/png", "image/octet-stream")
-                          );
-                          link.click();
-                        }}
-                        type="button"
-                        className="inline-flex justify-center items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white"
-                      >
-                        <CloudDownloadIcon className="h-5 w-5 text-blue-500 mr-2" />
-                        Download Image
-                      </button>
+                      {globeFile ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              const canvas =
+                                globeRef.current.renderer().domElement;
+                              const link = linkRef.current;
+                              link.setAttribute("download", "globe.png");
+                              link.setAttribute(
+                                "href",
+                                canvas
+                                  .toDataURL("image/png")
+                                  .replace("image/png", "image/octet-stream")
+                              );
+                              link.click();
+                            }}
+                            type="button"
+                            className="inline-flex justify-center items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white mb-2"
+                          >
+                            <CloudDownloadIcon className="h-5 w-5 text-blue-500 mr-2" />
+                            Download Image
+                          </button>
+                          <button
+                            onClick={async () => {
+                              if (globeFile) {
+                                const id = makeid(8);
+                                const toastId = toast.loading(
+                                  "Creating your globe URL"
+                                );
+                                const { data, error } = await supabase.storage
+                                  .from("globe")
+                                  .upload(`public/${id}.png`, globeFile);
+                                if (!error) {
+                                  console.log({ data });
+                                  toast.success("Your globe URL is Ready", {
+                                    id: toastId,
+                                  });
+                                  router.push(`share/${id}`);
+                                }
+                              }
+                            }}
+                            type="button"
+                            className="inline-flex justify-center items-center px-6 py-3 border text-blue-500 font-semibold rounded-md transition dutation-150 ease-in-out transform hover:scale-105 bg-white mb-2"
+                          >
+                            <ShareIcon className="h-5 w-5 text-blue-500 mr-2" />
+                            Share Globe
+                          </button>
+                        </>
+                      ) : null}
                     </div>
                   </div>
                   <Globe
@@ -262,6 +317,7 @@ const Home = () => {
       </main>
 
       <footer className=""></footer>
+      <Toaster />
     </div>
   );
 };
