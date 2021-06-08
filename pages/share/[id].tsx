@@ -1,12 +1,12 @@
 import * as React from "react";
 import Head from "next/head";
-import TweetEmbed from "react-tweet-embed";
 import {
   CloudUploadIcon,
   CloudDownloadIcon,
   ClipboardCopyIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { useDropzone } from "react-dropzone";
 
 import toast, { Toaster } from "react-hot-toast";
 
@@ -34,13 +34,23 @@ const ShareScreen = () => {
     }
   }, [id]);
 
+  const processFile = (files) => {
+    const data = URL.createObjectURL(files[0]);
+    setImageUrl(data);
+  };
+
+  const onDrop = React.useCallback((files) => {
+    processFile(files);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   return (
     <div className="">
       <Head>
         <title>Globe 3D</title>
       </Head>
 
-      <main className="">
+      <main className="" {...getRootProps()}>
         <div className="relative bg-white overflow-hidden min-h-screen">
           <nav className="bg-white">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -83,7 +93,7 @@ const ShareScreen = () => {
               </div>
             </div>
           </nav>
-          <main className="w-96 mx-auto flex flex-col items-center justify-center">
+          <div className="w-96 mx-auto flex flex-col items-center justify-center">
             <div className="">
               <Globe
                 //@ts-ignore
@@ -111,10 +121,7 @@ const ShareScreen = () => {
               >
                 <input
                   ref={inputRef}
-                  onChange={(e) => {
-                    const data = URL.createObjectURL(e.target.files[0]);
-                    setImageUrl(data);
-                  }}
+                  onChange={(e) => processFile(e.target.files)}
                   type="file"
                   className="hidden"
                 />
@@ -161,7 +168,7 @@ const ShareScreen = () => {
                 Copy Share Url
               </button>
             </div>
-          </main>
+          </div>
           <footer className="bg-gradient-to-r from-blue-300 to-blue-500">
             <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
               <nav
@@ -199,6 +206,13 @@ const ShareScreen = () => {
             </div>
           </footer>
         </div>
+        {isDragActive ? (
+          <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center ">
+            <p className="text-3xl text-white text-center font-bold">
+              Drop the file here ...
+            </p>
+          </div>
+        ) : null}
       </main>
 
       <footer className=""></footer>

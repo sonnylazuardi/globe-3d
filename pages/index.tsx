@@ -8,6 +8,7 @@ import {
   CodeIcon,
   ShareIcon,
 } from "@heroicons/react/outline";
+import { useDropzone } from "react-dropzone";
 
 let Globe = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
@@ -48,13 +49,24 @@ const Home = () => {
     color: [["#000000"][0], ["#000000"][0]],
   }));
 
+  const processFile = (files) => {
+    const data = URL.createObjectURL(files[0]);
+    setImageUrl(data);
+    setGlobeFile(files[0]);
+  };
+
+  const onDrop = React.useCallback((files) => {
+    processFile(files);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   return (
     <div className="">
       <Head>
         <title>Globe 3D</title>
       </Head>
 
-      <main className="">
+      <main className="" {...getRootProps()}>
         <div className="relative bg-white overflow-hidden min-h-screen">
           <nav className="bg-white">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -152,16 +164,12 @@ const Home = () => {
                       >
                         <input
                           ref={inputRef}
-                          onChange={(e) => {
-                            const data = URL.createObjectURL(e.target.files[0]);
-                            setImageUrl(data);
-                            setGlobeFile(e.target.files[0]);
-                          }}
+                          onChange={(e) => processFile(e.target.files)}
                           type="file"
                           className="hidden"
                         />
                         <CloudUploadIcon className="h-5 w-5 text-blue-500 mr-2" />
-                        Upload Image
+                        Upload or Drag & Drop Image
                       </button>
 
                       {globeFile ? (
@@ -314,6 +322,13 @@ const Home = () => {
             </div>
           </footer>
         </div>
+        {isDragActive ? (
+          <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center ">
+            <p className="text-3xl text-white text-center font-bold">
+              Drop the file here ...
+            </p>
+          </div>
+        ) : null}
       </main>
 
       <footer className=""></footer>

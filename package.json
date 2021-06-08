@@ -18,6 +18,7 @@
     "postcss": "^8.3.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-dropzone": "^11.3.2",
     "react-globe.gl": "^2.18.2",
     "react-hot-toast": "^1.0.2",
     "react-tweet-embed": "^1.2.2",
